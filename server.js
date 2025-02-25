@@ -152,10 +152,31 @@ wss.on('connection', (ws) => {
     // Handle incoming messages
     ws.on('message', (message) => {
         const data = JSON.parse(message);
-        if (data.action === 'interrupt' && processData.currentProcess) {
-            processData.currentProcess.estado = 'Interrumpido';
-            processData.processes.push(processData.currentProcess);
-            processData.currentProcess = null;
+            if (data.action === 'interrupt' && processData.currentProcess) {
+                // Simulate I/O operation by moving current process to end of its batch
+                const interruptedProcess = processData.currentProcess;
+                interruptedProcess.estado = 'En espera'; // Set back to waiting state
+                
+                // Find the batch containing the current process
+                const batchSize = 3;
+                const processIndex = processData.processes.indexOf(interruptedProcess);
+                const batchStart = Math.floor(processIndex / batchSize) * batchSize;
+                const batchEnd = batchStart + batchSize;
+                
+                // Remove from current position
+                processData.processes.splice(processIndex, 1);
+                // Add to end of batch
+                processData.processes.splice(batchEnd - 1, 0, interruptedProcess);
+                
+                processData.currentProcess = null; // Clear current process
+                // Start next process if available
+                const nextProcess = processData.processes.find(p => p.estado === 'En espera');
+                if (nextProcess) {
+                    processData.currentProcess = nextProcess;
+                    nextProcess.estado = 'En ejecucion';
+                }
+
+
         } else if (data.action === 'error' && processData.currentProcess) {
             processData.currentProcess.estado = 'Error';
             processData.currentProcess = null;
