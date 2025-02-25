@@ -63,23 +63,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     document.addEventListener('keydown', (event) => {
+        if (!ws || ws.readyState !== WebSocket.OPEN) return;
+        
         switch (event.key) {
             case 'i':
-                // Logic to interrupt the current process
-                processStatus.innerHTML += '<br>Interrupting current process...';
+                ws.send(JSON.stringify({ action: 'interrupt' }));
                 break;
             case 'e':
-                // Logic to end the current process as an error
-                processStatus.innerHTML += '<br>Ending current process as an error...';
+                ws.send(JSON.stringify({ action: 'error' }));
                 break;
             case 'p':
-                // Logic to pause the current process
-                processStatus.innerHTML += '<br>Pausing current process...';
+                ws.send(JSON.stringify({ action: 'pause' }));
                 break;
             case 'c':
-                // Logic to resume the current process
-                processStatus.innerHTML += '<br>Resuming current process...';
+                ws.send(JSON.stringify({ action: 'continue' }));
                 break;
         }
     });
+
 });

@@ -149,6 +149,23 @@ wss.on('connection', (ws) => {
     console.log('Client connected');
     ws.send(JSON.stringify(processData));
 
+    // Handle incoming messages
+    ws.on('message', (message) => {
+        const data = JSON.parse(message);
+        if (data.action === 'interrupt' && processData.currentProcess) {
+            processData.currentProcess.estado = 'Interrumpido';
+            processData.processes.push(processData.currentProcess);
+            processData.currentProcess = null;
+        } else if (data.action === 'error' && processData.currentProcess) {
+            processData.currentProcess.estado = 'Error';
+            processData.currentProcess = null;
+        } else if (data.action === 'pause' && processData.currentProcess) {
+            processData.currentProcess.estado = 'Pausado';
+        } else if (data.action === 'continue' && processData.currentProcess) {
+            processData.currentProcess.estado = 'En ejecucion';
+        }
+    });
+
     // Start simulating processes
     simulateProcesses();
 
@@ -156,6 +173,7 @@ wss.on('connection', (ws) => {
         console.log('Client disconnected');
     });
 });
+
 
 // Routes
 app.get('/', (req, res) => {
