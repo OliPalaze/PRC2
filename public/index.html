@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Process Management Simulation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Process Management Simulation</h1>
+    <form id="processForm">
+        <label for="numProcesses">Enter number of processes:</label>
+        <input type="number" id="numProcesses" name="numProcesses" required>
+        <button type="submit">Start Simulation</button>
+    </form>
+    <div id="processStatus">
+        <h2>Process Management Simulation</h2>
+        <div id="globalCounter">Global Counter: 0</div>
+        <div id="pendingLots">Pending Lots: 0</div>
+        <div id="currentProcess">
+            <h3>Current Process</h3>
+            <p>ID: <span id="currentProcessId"></span></p>
+            <p>Operation: <span id="currentProcessOperation"></span></p>
+            <p>Time Remaining: <span id="currentProcessTime"></span></p>
+            <p>Status: <span id="currentProcessStatus"></span></p>
+        </div>
+        <div id="processList">
+            <h3>Process Queue</h3>
+            <ul id="processQueue"></ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <style>
+        #processStatus {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #currentProcess, #processList {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 3px;
+        }
+        #processQueue {
+            list-style-type: none;
+            padding: 0;
+        }
+        #processQueue li {
+            padding: 5px;
+            margin: 5px 0;
+            background-color: #f5f5f5;
+            border-radius: 3px;
+        }
+    </style>
+
+</body>
+</html>
