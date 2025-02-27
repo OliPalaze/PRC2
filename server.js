@@ -137,7 +137,14 @@ function simulateProcesses() {
         // Send updates to all connected clients
         wss.clients.forEach(client => {
             if (client.readyState === WebSocket.OPEN) {
-                client.send(JSON.stringify(processData));
+                client.send(JSON.stringify({
+                    ...processData,
+                    processes: processData.processes.map(process => ({
+                        ...process,
+                        resultado: process.resultado // Ensure results are included
+                    }))
+                }));
+
             }
         });
     }, 1000);

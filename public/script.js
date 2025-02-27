@@ -20,7 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
         updateUI(data);
     };
 
-    function updateUI(data) {
+function updateUI(data) {
+    // Display results from each operation
+    const resultsContainer = document.getElementById('resultsContainer');
+    resultsContainer.innerHTML = ''; // Clear previous results
+
         // Update global counter and pending lots
         globalCounter.textContent = `Global Counter: ${data.globalCounter}`;
         pendingLots.textContent = `Pending Lots: ${data.pendingLots}`;
@@ -39,11 +43,29 @@ document.addEventListener('DOMContentLoaded', () => {
             currentProcessStatus.textContent = 'None';
         }
 
-        // Update process queue
+        // Display results for each operation
+        if (data.results) {
+            data.results.forEach(result => {
+                const resultItem = document.createElement('div');
+                resultItem.textContent = `Result: ${result}`;
+                resultsContainer.appendChild(resultItem);
+            });
+        }
+
+        // Update process queue with results
         processQueue.innerHTML = '';
         data.processes.forEach(process => {
             const li = document.createElement('li');
-            li.textContent = `ID: ${process.id} | Operation: ${process.operando1} ${process.operacion} ${process.operando2} | Time: ${process.tiempo_restante} | Status: ${process.estado}`;
+            li.textContent = `ID: ${process.id} | Operation: ${process.operando1} ${process.operacion} ${process.operando2} | Time: ${process.tiempo_restante} | Status: ${process.estado} | Result: ${process.result}`; // Display result next to operation
+            processQueue.appendChild(li);
+        });
+
+
+        processQueue.innerHTML = '';
+        data.processes.forEach(process => {
+            const li = document.createElement('li');
+            li.textContent = `ID: ${process.id} | Operation: ${process.operando1} ${process.operacion} ${process.operando2} | Time: ${process.tiempo_restante} | Status: ${process.estado} | Result: ${process.resultado}`; // Display result next to operation
+
             processQueue.appendChild(li);
         });
     }
